@@ -4,10 +4,9 @@ import Card from "../UI/Card/Card";
 import classes from "./Login.module.css";
 import Button from "../UI/Button/Button";
 import AuthContex from "../../Context/auth-context";
+import Input from "../UI/Input/Input";
 
 const emailReducer = (state, action) => {
-  
-
   if (action.type === "USER_INPUT") {
     return { value: action.val, isValid: action.val.includes("@") };
   }
@@ -44,15 +43,12 @@ const Login = (props) => {
     isValid: null,
   });
   const ctx = useContext(AuthContex);
-  const {isValid: emailIsvalid } = emailState; //=> to optymize my code and not run a extra validation
-  const {isValid: passIsValid } = passState;//      it's called destructuring
-
+  const { isValid: emailIsvalid } = emailState; //=> to optymize my code and not run a extra validation
+  const { isValid: passIsValid } = passState; //      it's called destructuring
 
   useEffect(() => {
     const identifier = setTimeout(() => {
-      setFormIsValid(
-        emailIsvalid && passIsValid
-      );
+      setFormIsValid(emailIsvalid && passIsValid);
     }, 500);
     return () => {
       clearTimeout(identifier);
@@ -89,7 +85,7 @@ const Login = (props) => {
   return (
     <Card className={classes.login}>
       <form onSubmit={submitHandler}>
-        <div
+        {/* <div
           className={`${classes.control} ${
             emailState.isValid === false ? classes.invalid : ""
           }`}
@@ -102,8 +98,18 @@ const Login = (props) => {
             onChange={emailChangeHandler}
             onBlur={validateEmailHandler}
           />
-        </div>
-        <div
+        </div> */}
+        <Input
+          id="email"
+          text="Email"
+          isValid={emailState.isValid}
+          htmlFor="email"
+          type="email"
+          value={emailState.value}
+          onChange={emailChangeHandler}
+          onBlur={validateEmailHandler}
+        />
+        {/* <div
           className={`${classes.control} ${
             passState.isValid === false ? classes.invalid : ""
           }`}
@@ -116,7 +122,17 @@ const Login = (props) => {
             onChange={passwordChangeHandler}
             onBlur={validatePasswordHandler}
           />
-        </div>
+        </div> */}
+        <Input
+          id="password"
+          text="Password"
+          isValid={passState.isValid}
+          htmlFor="password"
+          type="password"
+          value={passState.value}
+          onChange={passwordChangeHandler}
+          onBlur={validatePasswordHandler}
+        />
         <div className={classes.actions}>
           <Button type="submit" className={classes.btn} disabled={!formIsValid}>
             Login
