@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 
+import AuthContex from "./Context/auth-context";
 import Login from "./components/Login/Login";
 import Home from "./components/Home/Home";
 import MainHeader from "./components/MainHeader/MainHeader";
@@ -11,7 +12,7 @@ function App() {
     const storedUserLoggedInInformation = localStorage.getItem("isLoggedId");
     if (storedUserLoggedInInformation === "1") {
       setIsLoggedIn(true);
-    } 
+    }
   }, []);
   const loginHandler = (email, password) => {
     // We should of course check email and password
@@ -26,13 +27,17 @@ function App() {
   };
 
   return (
-    <React.Fragment>
-      <MainHeader isAuthenticated={isLoggedIn} onLogout={logoutHandler} />
+    <AuthContex.Provider
+      value={{
+        isLoggedIn: isLoggedIn,
+      }}
+    >
+      <MainHeader onLogout={logoutHandler} />
       <main>
         {!isLoggedIn && <Login onLogin={loginHandler} />}
         {isLoggedIn && <Home onLogout={logoutHandler} />}
       </main>
-    </React.Fragment>
+    </AuthContex.Provider>
   );
 }
 
