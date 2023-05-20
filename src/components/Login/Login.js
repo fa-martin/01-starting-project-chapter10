@@ -1,10 +1,13 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useContext } from "react";
 
 import Card from "../UI/Card/Card";
 import classes from "./Login.module.css";
 import Button from "../UI/Button/Button";
+import AuthContex from "../../Context/auth-context";
 
 const emailReducer = (state, action) => {
+  
+
   if (action.type === "USER_INPUT") {
     return { value: action.val, isValid: action.val.includes("@") };
   }
@@ -40,7 +43,7 @@ const Login = (props) => {
     value: "",
     isValid: null,
   });
-
+  const ctx = useContext(AuthContex);
   const {isValid: emailIsvalid } = emailState; //=> to optymize my code and not run a extra validation
   const {isValid: passIsValid } = passState;//      it's called destructuring
 
@@ -80,7 +83,7 @@ const Login = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    props.onLogin(emailState.value, passState.value);
+    ctx.onLogin(emailState.value, passState.value);
   };
 
   return (
